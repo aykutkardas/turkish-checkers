@@ -23,7 +23,7 @@ const App = {
     const board = new Board({ x: 8, y: 8 });
     const rules = new TurkishRules(board);
 
-    board.resetBoard();
+    board.initBoard();
 
     return {
       board,
@@ -48,11 +48,13 @@ const App = {
   methods: {
     selectItem({ target }) {
       const { coord } = target.dataset;
+      this.activeCoord = coord;
+
       const activeItem = this.board.getItem(coord);
+      this.activeItem = activeItem;
+
       this.board.deselectAllItems();
       this.board.selectItem(coord);
-      this.activeItem = activeItem;
-      this.activeCoord = coord;
     },
     moveItem({ target }) {
       const { coord, available } = target.dataset;
