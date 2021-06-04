@@ -1,6 +1,8 @@
 import { Checkers, Utils } from "ymir-js";
 
-const { Board, TurkishRules } = Checkers;
+const { Turkish } = Checkers;
+const { Board, Rules } = Turkish;
+
 const { useCoord } = Utils;
 
 const anime = require("animejs").default;
@@ -21,7 +23,7 @@ function animate(coord, options = {}) {
 const App = {
   data() {
     const board = new Board({ x: 8, y: 8 });
-    const rules = new TurkishRules(board);
+    const rules = new Rules(board);
 
     board.initBoard();
 
