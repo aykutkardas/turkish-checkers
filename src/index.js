@@ -22,10 +22,10 @@ function animate(coord, options = {}) {
 
 const App = {
   data() {
-    const board = new Board({ x: 8, y: 8 });
+    const board = new Board();
     const rules = new Rules(board);
 
-    board.initBoard();
+    board.init();
 
     return {
       board,

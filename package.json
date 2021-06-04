@@ -22,6 +22,6 @@
   "devDependencies": {
     "animejs": "^3.2.1",
     "parcel-bundler": "^1.12.5",
-    "ymir-js": "^0.1.4"
+    "ymir-js": "^0.1.5"
   }
 }
