@@ -1,21 +1,27 @@
 body {
-  background: black;
+  background: #222;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
 }
 
 .board {
   padding: 60px 140px;
-  border: 1px solid #222;
+  border: 1px solid #444;
 }
 
 .row {
   display: flex;
   width: 100%;
-  padding: 2px;
 }
 
 .column {
   display: flex;
-  background-color: rgb(255, 255, 255, 0.5);
+  background-color: #666;
   align-items: center;
   justify-content: center;
   width: 50px;
@@ -23,8 +29,9 @@ body {
   color: white;
   cursor: pointer;
   transition: 0.1s;
-  margin: 2px;
+  margin: 1px;
   position: relative;
+  border-radius: 2px;
 }
 
 .column::before {
@@ -55,7 +62,6 @@ body {
   border-radius: 50%;
   background-color: #fff;
   font-size: 12px;
-  box-shadow: 1px 1px 3px #aaa;
   z-index: 1;
   transform: translate(-50%, -50%);
   top: 50%;
@@ -95,4 +101,14 @@ body {
     padding: 0;
     border: 0;
   }
+}
+
+.boardFooter {
+  color: white;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  padding: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }

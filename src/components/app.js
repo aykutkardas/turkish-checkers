@@ -124,35 +124,42 @@ const App = () => {
   };
 
   return (
-    <div className={style.board}>
-      {turn}
-      {boardMatrix.map((row) => (
-        <div key={row} class={style.row}>
-          {row.map(({ coord, item }) => (
-            <div
-              key={coord}
-              className={style.column}
-              data-coord={coord}
-              data-available={availableColumns.includes(coord)}
-              onClick={moveItem}
-            >
-              {item && (
-                <div
-                  className={`${style.item} ${
-                    item.color === "black" ? style.black : style.white
-                  }`}
-                  onClick={selectItem}
-                  data-coord={coord}
-                  data-color={item.color}
-                  data-selected={item.selected}
-                  data-king={item.king}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={style.board}>
+        {boardMatrix.map((row) => (
+          <div key={row} class={style.row}>
+            {row.map(({ coord, item }) => (
+              <div
+                key={coord}
+                className={style.column}
+                data-coord={coord}
+                data-available={availableColumns.includes(coord)}
+                onClick={moveItem}
+              >
+                {item && (
+                  <div
+                    className={`${style.item} ${
+                      item.color === "black" ? style.black : style.white
+                    }`}
+                    onClick={selectItem}
+                    data-coord={coord}
+                    data-color={item.color}
+                    data-selected={item.selected}
+                    data-king={item.king}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <a
+        className={style.boardFooter}
+        href="https://github.com/aykutkardas/turkish-checkers"
+      >
+        GitHub
+      </a>
+    </>
   );
 };
 
