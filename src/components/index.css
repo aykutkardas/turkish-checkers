@@ -1,18 +1,5 @@
 body {
-  background-color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding: 0;
-  margin: 0;
-  font-family: Arial;
-}
-
-.social {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+  background: black;
 }
 
 .board {
@@ -22,7 +9,6 @@ body {
 
 .row {
   display: flex;
-  height: 50px;
   width: 100%;
   padding: 2px;
 }
@@ -77,7 +63,7 @@ body {
   z-index: 1;
 }
 
-.item.black {
+.black {
   background-color: #000;
 }
 
