@@ -29,8 +29,6 @@ const App = () => {
   const [turn, setTurn] = useState(0);
   const [move, setMove] = useState(0);
   const [activeColor, setActiveColor] = useState("black");
-
-  const [activeItem, setActiveItem] = useState(null);
   const [activeCoord, setActiveCoord] = useState(null);
   const [boardMatrix, setBoardMatrix] = useState(board.getBoardMatrix());
   const [availableColumns, setAvailableColumns] = useState([]);
@@ -41,14 +39,19 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!activeItem || !activeCoord) {
+    if (!activeCoord) {
       setAvailableColumns([]);
     } else {
-      const { movement } = activeItem;
-      const columns = board.getAvailableColumns(activeCoord, movement);
+      const activeItem = board.getItem(activeCoord);
+      if (!activeItem) return;
+
+      const columns = board.getAvailableColumns(
+        activeCoord,
+        activeItem.movement
+      );
       setAvailableColumns(columns);
     }
-  }, [activeItem, activeCoord]);
+  }, [activeCoord]);
 
   const autoPlay = () => {
     board.autoPlay(activeColor, {
@@ -70,8 +73,6 @@ const App = () => {
     }
 
     if (activeItem?.color !== activeColor) return;
-
-    setActiveItem(activeItem);
 
     board.deselectAllItems();
     board.selectItem(coord);
@@ -121,12 +122,11 @@ const App = () => {
       (destroyedAnyItemsThisTurn && !successMoves.length)
     ) {
       setActiveColor(activeColor === "white" ? "black" : "white");
+      setActiveCoord(null);
       setTurn(turn + 1);
-      setActiveItem(null);
       MoveSound.play();
     } else {
       board.selectItem(toCoord);
-
       board.getAvailableColumns(toCoord, board.getItem(toCoord).movement);
     }
     setMove(move + 1);
