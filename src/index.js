@@ -1,3 +1,5 @@
-import App from "./components/app";
+import Board from "./components/board";
 
-export default App;
+import "./index.css";
+
+export default Board;

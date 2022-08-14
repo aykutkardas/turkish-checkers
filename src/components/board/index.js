@@ -1,29 +1,14 @@
 import { useEffect, useState } from "preact/hooks";
 import { Checkers, Utils } from "ymir-js";
-import { Howl } from "howler";
 
 const { Board } = Checkers.Turkish;
 const { useCoord } = Utils;
 
-import style from "./index.css";
+import { toBoolean, getVoice } from "../../utils";
 
-function toBoolean(val) {
-  return val === "true";
-}
+import style from "./board.css";
 
 const board = new Board();
-
-const WoodHardHitVoice = new Howl({
-  src: ["/assets/voices/wood-hard-hit.wav"],
-});
-
-const MoveSound = new Howl({
-  src: ["/assets/voices/move-sound.mp3"],
-});
-
-const KnifeThrust = new Howl({
-  src: ["/assets/voices/knife-thrust-into-wall.mp3"],
-});
 
 const App = () => {
   const [turn, setTurn] = useState(0);
@@ -78,7 +63,7 @@ const App = () => {
     board.selectItem(coord);
 
     setActiveCoord(coord);
-    WoodHardHitVoice.play();
+    getVoice("select").play();
   };
 
   const handleSelectItem = ({ target }) => {
@@ -106,7 +91,7 @@ const App = () => {
 
     if (destroyedAnyItemsThisTurn) {
       coordsOfDestoryItems.forEach((coord) => {
-        KnifeThrust.play();
+        getVoice("destroy").play();
         board.removeItem(coord);
       });
     }
@@ -124,7 +109,7 @@ const App = () => {
       setActiveColor(activeColor === "white" ? "black" : "white");
       setActiveCoord(null);
       setTurn(turn + 1);
-      MoveSound.play();
+      getVoice("move").play();
     } else {
       board.selectItem(toCoord);
       board.getAvailableColumns(toCoord, board.getItem(toCoord).movement);
@@ -147,7 +132,7 @@ const App = () => {
 
   return (
     <>
-      <div className={style.board} active-color={activeColor}>
+      <div className={style.board}>
         {boardMatrix.map((row) => (
           <div key={row} class={style.row}>
             {row.map(({ coord, item }) => (
