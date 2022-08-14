@@ -27,6 +27,7 @@ const KnifeThrust = new Howl({
 
 const App = () => {
   const [turn, setTurn] = useState(0);
+  const [move, setMove] = useState(0);
   const [activeColor, setActiveColor] = useState("black");
 
   const [activeItem, setActiveItem] = useState(null);
@@ -37,7 +38,6 @@ const App = () => {
   useEffect(() => {
     board.init();
     setBoardMatrix(board.getBoardMatrix());
-    console.log(board);
   }, []);
 
   useEffect(() => {
@@ -50,15 +50,22 @@ const App = () => {
     }
   }, [activeItem, activeCoord]);
 
-  const selectItem = ({ target }) => {
-    const { coord } = target.dataset;
+  const autoPlay = () => {
+    board.autoPlay(activeColor, {
+      onSelect: selectItem,
+      onMove: (itemCoord, coord) => {
+        setTimeout(() => moveItem(itemCoord, coord), 250);
+      },
+    });
+  };
+
+  const selectItem = (coord) => {
     const activeItem = board.getItem(coord);
 
-    const successMoves =
-      board.analyzeBoardForAvailableSuccessMoves(activeColor);
+    const successMoves = Object.keys(board.analyzeAvailableAttack(activeColor));
 
     if (successMoves.length && !successMoves.includes(coord)) {
-      selectItem({ target: { dataset: { coord: successMoves[0] } } });
+      selectItem(successMoves[0]);
       return;
     }
 
@@ -73,26 +80,28 @@ const App = () => {
     WoodHardHitVoice.play();
   };
 
-  const moveItem = ({ target }) => {
-    const { coord, available } = target.dataset;
+  const handleSelectItem = ({ target }) => {
+    const { coord } = target.dataset;
+    selectItem(coord);
+  };
 
-    if (!toBoolean(available)) return;
-
+  const moveItem = (fromCoord, toCoord) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [toRowId] = useCoord(coord);
+    const [toRowId] = useCoord(toCoord);
 
     if (toRowId === 0 || toRowId === 7) {
+      const activeItem = board.getItem(fromCoord);
       activeItem.setKing();
     }
 
     const coordsOfDestoryItems = board.getItemsBetweenTwoCoords(
-      activeCoord,
-      coord
+      fromCoord,
+      toCoord
     );
 
     const destroyedAnyItemsThisTurn = coordsOfDestoryItems.length > 0;
 
-    board.moveItem(activeCoord, coord);
+    board.moveItem(fromCoord, toCoord);
 
     if (destroyedAnyItemsThisTurn) {
       coordsOfDestoryItems.forEach((coord) => {
@@ -103,10 +112,9 @@ const App = () => {
 
     board.deselectAllItems();
     setBoardMatrix(board.getBoardMatrix());
-    setActiveCoord(coord);
+    setActiveCoord(toCoord);
 
-    const successMoves =
-      board.analyzeBoardForAvailableSuccessMoves(activeColor);
+    const successMoves = Object.keys(board.analyzeAvailableAttack(activeColor));
 
     if (
       !destroyedAnyItemsThisTurn ||
@@ -117,15 +125,29 @@ const App = () => {
       setActiveItem(null);
       MoveSound.play();
     } else {
-      board.selectItem(coord);
+      board.selectItem(toCoord);
 
-      board.getAvailableColumns(coord, board.getItem(coord).movement);
+      board.getAvailableColumns(toCoord, board.getItem(toCoord).movement);
     }
+    setMove(move + 1);
   };
+
+  const handleMoveItem = ({ target }) => {
+    const { coord, available } = target.dataset;
+
+    if (!toBoolean(available)) return;
+
+    moveItem(activeCoord, coord);
+  };
+
+  useEffect(() => {
+    if (activeColor === "white") autoPlay();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [move]);
 
   return (
     <>
-      <div className={style.board}>
+      <div className={style.board} active-color={activeColor}>
         {boardMatrix.map((row) => (
           <div key={row} class={style.row}>
             {row.map(({ coord, item }) => (
@@ -134,14 +156,14 @@ const App = () => {
                 className={style.column}
                 data-coord={coord}
                 data-available={availableColumns.includes(coord)}
-                onClick={moveItem}
+                onClick={handleMoveItem}
               >
                 {item && (
                   <div
                     className={`${style.item} ${
                       item.color === "black" ? style.black : style.white
                     }`}
-                    onClick={selectItem}
+                    onClick={handleSelectItem}
                     data-coord={coord}
                     data-color={item.color}
                     data-selected={item.selected}

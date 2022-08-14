@@ -32,24 +32,37 @@ body {
   margin: 1px;
   position: relative;
   border-radius: 2px;
+  box-shadow: 1px 1px 2px 1px #121212;
+}
+
+.row:nth-child(odd) .column:nth-child(odd) {
+  background-color: #555;
+}
+
+.row:nth-child(even) .column:nth-child(even) {
+  background-color: #555;
 }
 
 .column::before {
   content: attr(data-coord);
   display: block;
-  opacity: 0.25;
+  opacity: 0.5;
   color: black;
   font-size: 11px;
-  letter-spacing: 1px;
   pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px;
+  font-size: 8px;
 }
 
 .column[data-available="true"] {
-  background-color: #cafcca;
+  background-color: #cafcca !important;
 }
 
 .column[data-available="true"]:hover {
-  background-color: #cafccacc;
+  background-color: #cafccacc !important;
 }
 
 .item {
@@ -69,8 +82,21 @@ body {
   z-index: 1;
 }
 
+.item::before {
+  content: "";
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: #eee;
+  border-radius: 50%;
+}
+
 .black {
   background-color: #000;
+}
+
+.black::before {
+  background: #222;
 }
 
 .item[data-selected="true"] {
