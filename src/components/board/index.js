@@ -100,11 +100,13 @@ const App = () => {
     setBoardMatrix(board.getBoardMatrix());
     setActiveCoord(toCoord);
 
-    const successMoves = Object.keys(board.getAttackCoordsByColor(activeColor));
+    const successMoves = Object.keys(
+      board.getAttackCoordsByColor(activeColor)
+    ).filter((moveCoord) => moveCoord === toCoord);
+
     if (
       !destroyedAnyItemsThisTurn ||
-      (destroyedAnyItemsThisTurn && !successMoves.length) ||
-      (destroyedAnyItemsThisTurn && !successMoves.includes(toCoord))
+      (destroyedAnyItemsThisTurn && !successMoves.length)
     ) {
       setActiveColor(activeColor === "white" ? "black" : "white");
       setActiveCoord(null);
