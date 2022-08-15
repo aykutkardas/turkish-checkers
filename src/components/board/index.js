@@ -10,8 +10,6 @@ import style from "./board.css";
 
 const board = new Board();
 
-window.board = board;
-
 const App = () => {
   const [turn, setTurn] = useState(0);
   const [move, setMove] = useState(0);
