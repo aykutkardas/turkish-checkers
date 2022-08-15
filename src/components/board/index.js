@@ -10,6 +10,8 @@ import style from "./board.css";
 
 const board = new Board();
 
+window.board = board;
+
 const App = () => {
   const [turn, setTurn] = useState(0);
   const [move, setMove] = useState(0);
@@ -24,7 +26,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!activeCoord) {
+    if (!activeCoord || activeColor === "white") {
       setAvailableColumns([]);
     } else {
       const activeItem = board.getItem(activeCoord);
@@ -36,7 +38,7 @@ const App = () => {
       );
       setAvailableColumns(columns);
     }
-  }, [activeCoord]);
+  }, [activeCoord, activeColor]);
 
   const autoPlay = () => {
     board.autoPlay(activeColor, {
@@ -50,7 +52,7 @@ const App = () => {
   const selectItem = (coord) => {
     const activeItem = board.getItem(coord);
 
-    const successMoves = Object.keys(board.analyzeAvailableAttack(activeColor));
+    const successMoves = Object.keys(board.getAttackCoordsByColor(activeColor));
 
     if (successMoves.length && !successMoves.includes(coord)) {
       selectItem(successMoves[0]);
@@ -100,11 +102,11 @@ const App = () => {
     setBoardMatrix(board.getBoardMatrix());
     setActiveCoord(toCoord);
 
-    const successMoves = Object.keys(board.analyzeAvailableAttack(activeColor));
-
+    const successMoves = Object.keys(board.getAttackCoordsByColor(activeColor));
     if (
       !destroyedAnyItemsThisTurn ||
-      (destroyedAnyItemsThisTurn && !successMoves.length)
+      (destroyedAnyItemsThisTurn && !successMoves.length) ||
+      (destroyedAnyItemsThisTurn && !successMoves.includes(toCoord))
     ) {
       setActiveColor(activeColor === "white" ? "black" : "white");
       setActiveCoord(null);
@@ -112,7 +114,6 @@ const App = () => {
       getVoice("move").play();
     } else {
       board.selectItem(toCoord);
-      board.getAvailableColumns(toCoord, board.getItem(toCoord).movement);
     }
     setMove(move + 1);
   };
@@ -126,7 +127,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (activeColor === "white") autoPlay();
+    if (activeColor === "white") setTimeout(autoPlay, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move]);
 
