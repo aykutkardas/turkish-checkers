@@ -4,7 +4,7 @@ import { Checkers, Utils } from "ymir-js";
 const { Board } = Checkers.Turkish;
 const { useCoord } = Utils;
 
-import { toBoolean, getVoice } from "../../utils";
+import { getVoice } from "../../utils";
 
 import style from "./board.css";
 
@@ -119,14 +119,21 @@ const App = () => {
   };
 
   const handleMoveItem = ({ target }) => {
-    const { coord, available } = target.dataset;
+    const { coord } = target.dataset;
 
-    if (!toBoolean(available)) return;
+    if (!availableColumns.includes(coord)) return;
 
     moveItem(activeCoord, coord);
   };
 
   useEffect(() => {
+    const activeColorItems = board.getItemsByColor(activeColor);
+
+    if (activeColorItems.length === 1) {
+      const [lastItem] = activeColorItems;
+      lastItem.setKing();
+    }
+
     if (activeColor === "white") setTimeout(autoPlay, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move]);
@@ -161,12 +168,9 @@ const App = () => {
           </div>
         ))}
       </div>
-      <a
-        className={style.boardFooter}
-        href="https://github.com/aykutkardas/turkish-checkers"
-      >
-        GitHub
-      </a>
+      <div className={style.boardFooter}>
+        <a href="https://github.com/aykutkardas/turkish-checkers">GitHub</a>
+      </div>
     </>
   );
 };

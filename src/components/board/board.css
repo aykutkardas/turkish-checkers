@@ -1,8 +1,3 @@
-.board {
-  padding: 60px 140px;
-  border: 1px solid #444;
-}
-
 .row {
   display: flex;
   width: 100%;
@@ -24,10 +19,7 @@
   box-shadow: 1px 1px 2px 1px #121212;
 }
 
-.row:nth-child(odd) .column:nth-child(odd) {
-  background-color: #555;
-}
-
+.row:nth-child(odd) .column:nth-child(odd),
 .row:nth-child(even) .column:nth-child(even) {
   background-color: #555;
 }
@@ -119,11 +111,17 @@
 }
 
 .boardFooter {
-  color: white;
   display: flex;
   justify-content: center;
-  text-decoration: none;
   padding: 5px;
+
+  position: absolute;
+  bottom: 0px;
+}
+
+.boardFooter a {
+  color: white;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
+  text-decoration: none;
 }

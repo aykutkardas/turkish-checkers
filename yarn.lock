@@ -11461,10 +11461,10 @@ yargs@^13.3.0:
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
 
-ymir-js@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/ymir-js/-/ymir-js-0.5.0.tgz#3657192003443e80bd3149323705ab11f053e004"
-  integrity sha512-wdMMHZL8X2EuOjnVCqvlr1MfyiZGzllHhu/MHeLElzyxYi/5TiLA1Nhwycyq4z2nPoayp5MyMaLeTrrOJJjTIA==
+ymir-js@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ymir-js/-/ymir-js-0.7.0.tgz#221c3c2c8799e1b9da3034bb7633be3c2620375c"
+  integrity sha512-oEcCpCVpOMEgmLqI7XkltlFCgpbaR6vH2oTCbJcKNu0qxd4kvQFTJ4FukjxZkFMcY0rwcY2BWvc5ul2Ik8jeTg==
   dependencies:
     lodash "^4.17.21"
 
